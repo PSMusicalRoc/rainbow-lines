@@ -4,7 +4,7 @@
 
 #define DEG2RAD M_PI / 180.0f
 
-GLuint Oval::program = 0;
+Shader* Oval::m_shader = nullptr;
 
 unsigned int Oval::remaining = 0;
 
@@ -51,9 +51,9 @@ Oval::Oval()
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
     glEnableVertexAttribArray(1);
 
-    if (!program)
+    if (!m_shader)
     {
-        program = LoadShader("shaders/Oval/vertex_shader.glsl", "shaders/Oval/fragment_shader.glsl");
+        m_shader = new Shader("shaders/Oval/vertex_shader.glsl", "shaders/Oval/fragment_shader.glsl");
     }
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -74,9 +74,10 @@ Oval::~Oval()
 {
     glDeleteBuffers(1, &m_VBA);
     remaining--;
-    if (program && !remaining)
+    if (m_shader && !remaining)
     {
-        glDeleteProgram(program);
+        m_shader->DeleteShader();
+        m_shader = nullptr;
     }
 }
 
@@ -146,7 +147,7 @@ void Oval::Render()
     
     glBindVertexArray(m_VAO);
     
-    glUseProgram(program);
+    m_shader->Use();
 
     glDrawArrays(GL_TRIANGLE_FAN, 0, vertices.size() / 6);
 }

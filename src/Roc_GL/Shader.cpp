@@ -2,7 +2,7 @@
 #include <fstream>
 #include <iostream>
 
-GLuint LoadShader(const std::string& vertshader_file, const std::string& fragshader_file)
+GLuint Shader::LoadShader(const std::string& vertshader_file, const std::string& fragshader_file)
 {
     std::ifstream vsh_file(vertshader_file);
     if (!vsh_file.is_open())
@@ -84,4 +84,63 @@ GLuint LoadShader(const std::string& vertshader_file, const std::string& fragsha
     glDeleteShader(fragshader);
 
     return program;
+}
+
+
+
+
+Shader::Shader(const std::string& vertshaderfile, const std::string& fragshaderfile)
+{
+    m_program = LoadShader(vertshaderfile, fragshaderfile);
+}
+
+Shader::~Shader()
+{
+    if (m_program)
+    {
+        glDeleteProgram(m_program);
+        m_program = 0;
+    }
+}
+
+bool Shader::SetUniformFloat(const std::string& uniform, float val)
+{
+    int uniformloc = glGetUniformLocation(m_program, uniform.c_str());
+    glUniform1f(uniformloc, val);
+    return true;
+}
+
+bool Shader::SetUniformInt(const std::string& uniform, int val)
+{
+    int uniformloc = glGetUniformLocation(m_program, uniform.c_str());
+    glUniform1i(uniformloc, val);
+    return true;
+}
+
+bool Shader::SetUniformBool(const std::string& uniform, bool val)
+{
+    int uniformloc = glGetUniformLocation(m_program, uniform.c_str());
+    glUniform1i(uniformloc, (int)val);
+    return true;
+}
+
+bool Shader::SetUniformVec2(const std::string& uniform, float v1, float v2)
+{
+    int uniformloc = glGetUniformLocation(m_program, uniform.c_str());
+    glUniform2f(uniformloc, v1, v2);
+    return true;
+}
+
+bool Shader::SetUniformVec3(const std::string& uniform, float v1, float v2, float v3)
+{
+    int uniformloc = glGetUniformLocation(m_program, uniform.c_str());
+    glUniform3f(uniformloc, v1, v2, v3);
+    return true;
+}
+
+bool Shader::SetUniformVec4(const std::string& uniform, float v1, float v2, float v3, float v4)
+{
+    int uniformloc = glGetUniformLocation(m_program, uniform.c_str());
+    glUniform4f(uniformloc, v1, v2, v3, v4);
+    return true;
 }

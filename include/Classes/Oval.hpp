@@ -25,7 +25,7 @@ private:
     // Shader info
     // static GLuint fragshader;
     // static GLuint vertshader;
-    static GLuint program;
+    static Shader* m_shader;
 
     static unsigned int remaining;
 
