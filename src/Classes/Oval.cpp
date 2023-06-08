@@ -32,7 +32,7 @@ GLfloat GetBValue(float xpos, float ypos)
 
 
 Oval::Oval()
-:IRenderable(), m_center(0.0f, 0.0f)
+:IObject(), m_center(0.0f, 0.0f)
 {
     // quickly generate a frame so that the buffer has
     // the correct size
@@ -137,6 +137,11 @@ void Oval::Frame_SetVertsCorrect(int screenX, int screenY)
         vertices.push_back(GetGValue(xpos, ypos));
         vertices.push_back(GetBValue(xpos, ypos));
     }
+}
+
+Oval* Oval::CreateInternal(float width, float height, int centerX, int centerY)
+{
+    return new Oval(width, height, centerX, centerY);
 }
 
 void Oval::Render()

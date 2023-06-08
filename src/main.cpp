@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "Classes/Oval.hpp"
-#include "Classes/Triangle.hpp"
+#include "Classes/Rectangle.hpp"
 
 #include <time.h>
 
@@ -47,15 +47,15 @@ int main()
     */
 
 
-    Oval* moval = new Oval(300, 60, 0, 70);
-    Renderable::m_renderables.push_back(moval);
+    Rectangle* rect = Rectangle::Create();
+    Oval* moval = Oval::Create(300, 60, 0, 70);
 
     int moval_x_dir = 1;
     int moval_y_dir = 1;
     int moval_speed_x = rand() % 10 + 5;
     int moval_speed_y = rand() % 10 + 5;
 
-    int rotatespeed = 5;
+    int rotatespeed = rand() % 5;
 
 
 
@@ -89,13 +89,13 @@ int main()
         }
 
         moval->Frame_SetVertsCorrect(screenWidth, screenHeight);
-        Renderable::Render();
+        Objects::Render();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-    delete moval;
+    Objects::DeleteAll();
 
     glfwDestroyWindow(window);
     glfwTerminate();

@@ -7,9 +7,11 @@
 #include <vector>
 #include <cmath>
 
-#include "Classes/Interfaces/Renderable.hpp"
+#include "Classes/Interfaces/Object.hpp"
 
-class Oval : virtual public IRenderable
+class Oval : 
+public IStaticCreation<IObject, Oval, float, float, int, int>,
+virtual public IObject
 {
 private:
     GLuint m_VBA;
@@ -29,9 +31,12 @@ private:
 
     static unsigned int remaining;
 
-public:
+protected:
     Oval();
     Oval(float width, float height, int centerX = 0, int centerY = 0);
+
+public:
+    
     ~Oval();
     
     void Frame_SetVertsCorrect(int screenX, int screenY);
@@ -48,6 +53,11 @@ public:
     void SetHeight(float height) { m_height_from_center = height; }
     void SetAngle(float angleDegrees) { angle = angleDegrees; }
 
+    //IObject methods
+
+    /** DO NOT USE OUTSIDE OF ISTATICCREATION */
+    static Oval* CreateInternal(float width, float height, int centerX = 0, int centerY = 0);
+    
     void Render() override;
 };
 
