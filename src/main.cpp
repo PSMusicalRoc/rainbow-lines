@@ -45,7 +45,12 @@ public:
 
     void Main() override
     {
+        glEnable(GL_MULTISAMPLE);
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LESS);
+
         Oval* moval = Oval::Create(50, 10, 0, 0);
+        Rectangle* rect = Rectangle::Create();
 
         int moval_x_dir = 1;
         int moval_y_dir = 1;
@@ -66,7 +71,7 @@ public:
             deltatime = _curr_time - _prev_time;
 
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             moval->SetAngle(moval->GetAngle() + rotatespeed);
             if (moval->GetAngle() >= 360)
@@ -119,14 +124,6 @@ int main()
     glfwWindowHint(GLFW_SAMPLES, 8);
 
     RGBApplication* App = RGBApplication::CreateApplication(screenTitle, screenWidth, screenHeight);
-
-    glEnable(GL_MULTISAMPLE);
-
-
-    /*
-    ######### CREATE GL THINGS AFTER HERE ############
-    */
-
     App->Main();
     App->FreeApplication();
 
