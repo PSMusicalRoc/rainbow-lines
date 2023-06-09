@@ -14,6 +14,14 @@ const int screenWidth = 1920;
 const int screenHeight = 1080;
 const char* screenTitle = "RGB Lines Test";
 
+#define MOVE_RIGHT GLFW_KEY_D
+#define MOVE_LEFT GLFW_KEY_A
+#define MOVE_UP GLFW_KEY_W
+#define MOVE_DOWN GLFW_KEY_S
+
+#define ROTATE_PLUS GLFW_KEY_RIGHT
+#define ROTATE_MINUS GLFW_KEY_LEFT
+
 class RGBApplication : public Application
 {
 protected:
@@ -52,12 +60,10 @@ public:
         Oval* moval = Oval::Create(50, 10, 0, 0);
         Rectangle* rect = Rectangle::Create();
 
-        int moval_x_dir = 1;
-        int moval_y_dir = 1;
-        int moval_speed_x = rand() % 10 + 5;
-        int moval_speed_y = rand() % 10 + 5;
+        int moval_speed_x = 500;
+        int moval_speed_y = 500;
 
-        int rotatespeed = rand() % 5;
+        int rotatespeed = 360;
 
         double _prev_time = glfwGetTime();
         double _curr_time = glfwGetTime();
@@ -73,29 +79,24 @@ public:
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            moval->SetAngle(moval->GetAngle() + rotatespeed);
-            if (moval->GetAngle() >= 360)
-            {
-                moval->SetAngle(moval->GetAngle() - 360);
-            }
-            
-            moval->SetX(moval->GetCenterX() + (moval_x_dir * moval_speed_x));
-            if (moval->GetCenterX() > Width() && moval_x_dir == 1 || 
-                moval->GetCenterX() < 0 && moval_x_dir == -1)
-            {
-                moval_x_dir *= -1;
-                moval_speed_x = rand() % 10 + 5;
-                rotatespeed = rand() % 5;
-            }
+            if (glfwGetKey(m_window, MOVE_DOWN) == GLFW_PRESS)
+                moval->SetY(moval->GetCenterY() - moval_speed_y * deltatime);
+            if (glfwGetKey(m_window, MOVE_UP) == GLFW_PRESS)
+                moval->SetY(moval->GetCenterY() + moval_speed_y * deltatime);
+            if (glfwGetKey(m_window, MOVE_RIGHT) == GLFW_PRESS)
+                moval->SetX(moval->GetCenterX() + moval_speed_x * deltatime);
+            if (glfwGetKey(m_window, MOVE_LEFT) == GLFW_PRESS)
+                moval->SetX(moval->GetCenterX() - moval_speed_x * deltatime);
 
-            moval->SetY(moval->GetCenterY() + (moval_y_dir * moval_speed_y));
-            if (moval->GetCenterY() > Height() && moval_y_dir == 1 ||
-                moval->GetCenterY() < 0 && moval_y_dir == -1)
-            {
-                moval_y_dir *= -1;
-                moval_speed_y = rand() % 10 + 5;
-                rotatespeed = rand() % 5;
-            }
+            if (glfwGetKey(m_window, ROTATE_PLUS) == GLFW_PRESS)
+                moval->SetAngle(moval->GetAngle() + rotatespeed * deltatime);
+            if (glfwGetKey(m_window, ROTATE_MINUS) == GLFW_PRESS)
+                moval->SetAngle(moval->GetAngle() - rotatespeed * deltatime);
+            
+            if (moval->GetAngle() >= 360)
+                moval->SetAngle(moval->GetAngle() - 360);
+            else if (moval->GetAngle() < 0)
+                moval->SetAngle(moval->GetAngle() + 360);
 
             Objects::Update(deltatime);
             Objects::Render();

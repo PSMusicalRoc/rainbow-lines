@@ -18,7 +18,7 @@ private:
     GLuint m_VAO;
     std::vector<GLfloat> vertices;
 
-    GLuint angle = 0;
+    double angle = 0;
 
     Point2D m_center;
     float m_height_from_center;
@@ -45,13 +45,13 @@ public:
     float GetHeight() const { return m_height_from_center; }
     float GetCenterX() const { return m_center.GetXStd(); }
     float GetCenterY() const { return m_center.GetYStd(); }
-    float GetAngle() const { return angle; }
+    double GetAngle() const { return angle; }
 
     void SetX(float x) { m_center.SetX(x); }
     void SetY(float y) { m_center.SetY(y); }
     void SetWidth(float width) { m_width_from_center = width; }
     void SetHeight(float height) { m_height_from_center = height; }
-    void SetAngle(float angleDegrees) { angle = angleDegrees; }
+    void SetAngle(double angleDegrees) { angle = angleDegrees; }
 
     //IObject methods
 
