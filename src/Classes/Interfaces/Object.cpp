@@ -19,6 +19,12 @@ IObject* Objects::FindObject()
     return nullptr;
 }
 
+void Objects::Update(double deltatime)
+{
+    for (IObject* obj : m_objects)
+        obj->Update(deltatime);
+}
+
 void Objects::Render()
 {
     for (IObject* obj : m_objects)

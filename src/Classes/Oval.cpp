@@ -2,6 +2,8 @@
 #include <cstring>
 #include <iostream>
 
+#include "Classes/Base/Application.hpp"
+
 #define DEG2RAD M_PI / 180.0f
 
 Shader* Oval::m_shader = nullptr;
@@ -81,7 +83,7 @@ Oval::~Oval()
     }
 }
 
-void Oval::Frame_SetVertsCorrect(int screenX, int screenY)
+void Oval::Frame_SetVertsCorrect()
 {
     // Here we do a lot of math, very quickly
     // In essence, here's the plan (boys)
@@ -101,6 +103,9 @@ void Oval::Frame_SetVertsCorrect(int screenX, int screenY)
     //      t is the parameter (0 to 2pi)
     //      a is the angle to rotate the ellipse by (counterclockwise, in rads)
     //      (CenterX, CenterY) is the point defining the ellipse's center
+
+    int screenX = Application::CurrentApplication()->Width();
+    int screenY = Application::CurrentApplication()->Height();
 
     float xpos, ypos;
     xpos = m_center.GetXGL(screenX);
@@ -142,6 +147,11 @@ void Oval::Frame_SetVertsCorrect(int screenX, int screenY)
 Oval* Oval::CreateInternal(float width, float height, int centerX, int centerY)
 {
     return new Oval(width, height, centerX, centerY);
+}
+
+void Oval::Update(double deltatime)
+{
+    Frame_SetVertsCorrect();
 }
 
 void Oval::Render()

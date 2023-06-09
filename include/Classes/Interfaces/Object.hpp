@@ -9,6 +9,13 @@ struct IObject
 public:
     IObject() {}
     virtual ~IObject() {};
+    
+    // This is overwritable if you wish, but is
+    // not a requirement for the object
+    virtual void Update(double deltatime) {}
+
+    // This is a requirement, even if the
+    // object has no graphical side.
     virtual void Render() = 0;
 };
 
@@ -22,6 +29,7 @@ public:
     static void AddObject(IObject* obj);
     static IObject* FindObject();
 
+    static void Update(double deltatime);
     static void Render();
 };
 

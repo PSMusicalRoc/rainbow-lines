@@ -1,16 +1,96 @@
 #include "glad/gl.h"
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
 #include <iostream>
 
 #include "Classes/Oval.hpp"
 #include "Classes/Rectangle.hpp"
 
+#include "Classes/Base/Application.hpp"
+
 #include <time.h>
 
 const int screenWidth = 1920;
 const int screenHeight = 1080;
 const char* screenTitle = "RGB Lines Test";
+
+class RGBApplication : public Application
+{
+protected:
+    RGBApplication(const std::string& winTitle, int width, int height)
+        :Application(winTitle, width, height) {}
+
+public:
+    static RGBApplication* CreateApplication(const std::string& winTitle, int width, int height)
+    {
+        RGBApplication* app = new RGBApplication(winTitle, width, height);
+        if (m_currApp != nullptr)
+            m_currApp->FreeApplication();
+        
+        Application::m_currApp = app;
+        return app;
+    }
+
+    void Main() override
+    {
+        Oval* moval = Oval::Create(50, 10, 0, 0);
+
+        int moval_x_dir = 1;
+        int moval_y_dir = 1;
+        int moval_speed_x = rand() % 10 + 5;
+        int moval_speed_y = rand() % 10 + 5;
+
+        int rotatespeed = rand() % 5;
+
+        double _prev_time = glfwGetTime();
+        double _curr_time = glfwGetTime();
+        double deltatime = 0;
+
+
+        while (!glfwWindowShouldClose(m_window))
+        {
+            _prev_time = _curr_time;
+            _curr_time = glfwGetTime();
+            deltatime = _curr_time - _prev_time;
+
+            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
+
+            moval->SetAngle(moval->GetAngle() + rotatespeed);
+            if (moval->GetAngle() >= 360)
+            {
+                moval->SetAngle(moval->GetAngle() - 360);
+            }
+            
+            moval->SetX(moval->GetCenterX() + (moval_x_dir * moval_speed_x));
+            if (moval->GetCenterX() > Width() && moval_x_dir == 1 || 
+                moval->GetCenterX() < 0 && moval_x_dir == -1)
+            {
+                moval_x_dir *= -1;
+                moval_speed_x = rand() % 10 + 5;
+                rotatespeed = rand() % 5;
+            }
+
+            moval->SetY(moval->GetCenterY() + (moval_y_dir * moval_speed_y));
+            if (moval->GetCenterY() > Height() && moval_y_dir == 1 ||
+                moval->GetCenterY() < 0 && moval_y_dir == -1)
+            {
+                moval_y_dir *= -1;
+                moval_speed_y = rand() % 10 + 5;
+                rotatespeed = rand() % 5;
+            }
+
+            Objects::Update(deltatime);
+            Objects::Render();
+
+            glfwSwapBuffers(m_window);
+            glfwPollEvents();
+        }
+
+        Objects::DeleteAll();
+    }
+};
 
 int main()
 {
@@ -27,17 +107,7 @@ int main()
     // windowhints
     glfwWindowHint(GLFW_SAMPLES, 8);
 
-    GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, screenTitle,
-        NULL, NULL);
-    if (!window)
-    {
-        std::cout << "Could not initialize window." << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-
-    glfwMakeContextCurrent(window);
-    gladLoadGL(glfwGetProcAddress);
+    RGBApplication* App = RGBApplication::CreateApplication(screenTitle, screenWidth, screenHeight);
 
     glEnable(GL_MULTISAMPLE);
 
@@ -46,57 +116,8 @@ int main()
     ######### CREATE GL THINGS AFTER HERE ############
     */
 
+    App->Main();
+    App->FreeApplication();
 
-    Rectangle* rect = Rectangle::Create();
-    Oval* moval = Oval::Create(300, 60, 0, 70);
-
-    int moval_x_dir = 1;
-    int moval_y_dir = 1;
-    int moval_speed_x = rand() % 10 + 5;
-    int moval_speed_y = rand() % 10 + 5;
-
-    int rotatespeed = rand() % 5;
-
-
-
-    while (!glfwWindowShouldClose(window))
-    {
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        moval->SetAngle(moval->GetAngle() + rotatespeed);
-        if (moval->GetAngle() >= 360)
-        {
-            moval->SetAngle(moval->GetAngle() - 360);
-        }
-        
-        moval->SetX(moval->GetCenterX() + (moval_x_dir * moval_speed_x));
-        if (moval->GetCenterX() > screenWidth && moval_x_dir == 1 || 
-            moval->GetCenterX() < 0 && moval_x_dir == -1)
-        {
-            moval_x_dir *= -1;
-            moval_speed_x = rand() % 10 + 5;
-            rotatespeed = rand() % 5;
-        }
-
-        moval->SetY(moval->GetCenterY() + (moval_y_dir * moval_speed_y));
-        if (moval->GetCenterY() > screenHeight && moval_y_dir == 1 ||
-            moval->GetCenterY() < 0 && moval_y_dir == -1)
-        {
-            moval_y_dir *= -1;
-            moval_speed_y = rand() % 10 + 5;
-            rotatespeed = rand() % 5;
-        }
-
-        moval->Frame_SetVertsCorrect(screenWidth, screenHeight);
-        Objects::Render();
-
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
-
-    Objects::DeleteAll();
-
-    glfwDestroyWindow(window);
     glfwTerminate();
 }

@@ -31,15 +31,15 @@ private:
 
     static unsigned int remaining;
 
+    void Frame_SetVertsCorrect();
+
 protected:
     Oval();
-    Oval(float width, float height, int centerX = 0, int centerY = 0);
+    Oval(float width, float height, int centerX, int centerY);
 
 public:
     
     ~Oval();
-    
-    void Frame_SetVertsCorrect(int screenX, int screenY);
 
     float GetWidth() const { return m_width_from_center; }
     float GetHeight() const { return m_height_from_center; }
@@ -58,6 +58,7 @@ public:
     /** DO NOT USE OUTSIDE OF ISTATICCREATION */
     static Oval* CreateInternal(float width, float height, int centerX = 0, int centerY = 0);
     
+    void Update(double deltatime) override;
     void Render() override;
 };
 
