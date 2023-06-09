@@ -1,7 +1,7 @@
 #ifndef _ROC_RECTANGLE_GL_HPP_
 #define _ROC_RECTANGLE_GL_HPP_
 
-#include "Classes/Point.hpp"
+#include "Classes/Geometry/Point.hpp"
 #include "Classes/Interfaces/Object.hpp"
 #include "Roc_GL/Shader.hpp"
 #include <glad/gl.h>

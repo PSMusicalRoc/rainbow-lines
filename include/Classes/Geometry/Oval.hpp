@@ -2,7 +2,7 @@
 #define _ROC_OVAL_GL_H_
 
 #include <glad/gl.h>
-#include "Classes/Point.hpp"
+#include "Classes/Geometry/Point.hpp"
 #include "Roc_GL/Shader.hpp"
 #include <vector>
 #include <cmath>

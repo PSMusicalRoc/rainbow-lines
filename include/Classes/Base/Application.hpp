@@ -27,6 +27,9 @@ public:
     int Width() const { return m_winWidth; }
     int Height() const { return m_winHeight; }
 
+    void SetWidth(int w) { m_winWidth = w; }
+    void SetHeight(int h) { m_winHeight = h; }
+
     static Application* CurrentApplication() { return m_currApp; }
 
     virtual void Main() = 0;

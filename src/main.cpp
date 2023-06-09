@@ -4,8 +4,7 @@
 
 #include <iostream>
 
-#include "Classes/Oval.hpp"
-#include "Classes/Rectangle.hpp"
+#include "Classes/Geometry/Geometry.hpp"
 
 #include "Classes/Base/Application.hpp"
 
@@ -19,7 +18,19 @@ class RGBApplication : public Application
 {
 protected:
     RGBApplication(const std::string& winTitle, int width, int height)
-        :Application(winTitle, width, height) {}
+        :Application(winTitle, width, height)
+    {
+        glfwSetWindowSizeCallback(m_window, [](GLFWwindow* win, int width, int height){
+            Application::CurrentApplication()->SetWidth(width);
+            Application::CurrentApplication()->SetHeight(height);
+        });
+    }
+    
+    void window_size_callback(GLFWwindow* win, int width, int height)
+    {
+        m_winWidth = width;
+        m_winHeight = height;
+    }
 
 public:
     static RGBApplication* CreateApplication(const std::string& winTitle, int width, int height)

@@ -1,4 +1,4 @@
-#include "Classes/Spline.hpp"
+#include "Classes/Geometry/Spline.hpp"
 
 Point2D Spline::LerpCubic(float t)
 {
