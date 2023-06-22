@@ -2,7 +2,7 @@
 #define _ROC_MODULAR_OBJECT_GL_HPP_
 
 #include <vector>
-#include "Classes/Interfaces/Object.hpp"
+#include "Interfaces/Object.hpp"
 
 class IModularObject : public IObject
 {

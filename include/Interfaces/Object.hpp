@@ -8,7 +8,7 @@ struct IObject
 {
 public:
     IObject() {}
-    virtual ~IObject() {};
+    virtual ~IObject() {}
     
     // This is overwritable if you wish, but is
     // not a requirement for the object

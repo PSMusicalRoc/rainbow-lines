@@ -1,8 +1,8 @@
-#include "Classes/Geometry/Oval.hpp"
+#include "Geometry/Oval.hpp"
 #include <cstring>
 #include <iostream>
 
-#include "Classes/Base/Application.hpp"
+#include "Base/Application.hpp"
 
 #define DEG2RAD M_PI / 180.0f
 
@@ -34,11 +34,16 @@ GLfloat GetBValue(float xpos, float ypos)
 
 
 Oval::Oval()
-:IObject(), m_center(0.0f, 0.0f)
+:IObject()
 {
     // quickly generate a frame so that the buffer has
     // the correct size
     //Frame_SetVertsCorrect(1, 1);
+
+    Coordinator* cd = Coordinator::Get();
+    me = cd->CreateEntity();
+
+    cd->AddComponent<Transform>(me, Transform());
 
     glGenVertexArrays(1, &m_VAO);
     glBindVertexArray(m_VAO);
@@ -67,7 +72,10 @@ Oval::Oval()
 Oval::Oval(float width, float height, int centerX, int centerY)
 :Oval()
 {
-    m_center = Point2D(centerX, centerY);
+    Coordinator* cd = Coordinator::Get();
+    Transform& transform = cd->GetComponent<Transform>(me);
+    transform.x = centerX;
+    transform.y = centerY;
     m_width_from_center = width;
     m_height_from_center = height;
 }
@@ -106,6 +114,11 @@ void Oval::Frame_SetVertsCorrect()
 
     int screenX = Application::CurrentApplication()->Width();
     int screenY = Application::CurrentApplication()->Height();
+
+    Coordinator* cd = Coordinator::Get();
+    Transform& transform = cd->GetComponent<Transform>(me);
+
+    Point2D m_center(transform.x, transform.y);
 
     float xpos, ypos;
     xpos = m_center.GetXGL(screenX);

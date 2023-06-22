@@ -1,4 +1,4 @@
-#include "Classes/Geometry/Rectangle.hpp"
+#include "Geometry/Rectangle.hpp"
 
 Shader* Rectangle::m_shader = nullptr;
 unsigned int Rectangle::remaining = 0;

@@ -1,7 +1,7 @@
 #ifndef _ROC_SPLINE_GL_H_
 #define _ROC_SPLINE_GL_H_
 
-#include "Classes/Geometry/Point.hpp"
+#include "Geometry/Point.hpp"
 
 class Spline
 {

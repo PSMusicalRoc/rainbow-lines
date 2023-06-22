@@ -1,4 +1,4 @@
-#include "Classes/Geometry/Point.hpp"
+#include "Geometry/Point.hpp"
 
 float Point2D::GetXGL(int screenX) const
 {

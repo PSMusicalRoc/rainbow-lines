@@ -1,4 +1,4 @@
-#include "Classes/Interfaces/Object.hpp"
+#include "Interfaces/Object.hpp"
 
 std::vector<IObject*> Objects::m_objects;
 

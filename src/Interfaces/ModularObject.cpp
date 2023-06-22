@@ -1,4 +1,4 @@
-#include "Classes/Interfaces/ModularObject.hpp"
+#include "Interfaces/ModularObject.hpp"
 
 void IModularObject::DeleteAll()
 {

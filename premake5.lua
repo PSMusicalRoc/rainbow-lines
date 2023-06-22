@@ -6,7 +6,13 @@ project "app"
     language "C++"   
 
 targetdir "bin/%{cfg.buildcfg}" 
-files { "include/**.h", "include/**.hpp", "src/**.cpp", "src/**.c" }
+files {
+    "include/**.h",
+    "include/**.hpp",
+    "include/**.cpp",
+    "src/**.cpp",
+    "src/**.c"
+}
 includedirs {"include"}
 links { "glfw" }
 

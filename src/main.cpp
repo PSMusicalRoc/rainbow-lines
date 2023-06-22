@@ -4,11 +4,12 @@
 
 #include <iostream>
 
-#include "Classes/Geometry/Geometry.hpp"
+#include "Geometry/Geometry.hpp"
 
-#include "Classes/Base/Application.hpp"
+#include "Base/Application.hpp"
 
 #include <time.h>
+#include <cassert>
 
 const int screenWidth = 1920;
 const int screenHeight = 1080;
